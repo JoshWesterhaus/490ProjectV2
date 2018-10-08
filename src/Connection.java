@@ -1,116 +1,112 @@
-/*
- * This class handles all communication between the tee sheet and the database.
- * It will receive the tee times as an object to send to the database
- * It will receive a day(int) and return an ArrayList of TeeTimes that match the day
- * 
- */
-
+import java.sql.*;
 import java.util.ArrayList;
 
-public class Translator
+/*
+ * Class to connect to the MySQL Database 
+ * Similar to the facade class that has a singleton connection that is established 
+ * at the beginning of the program. 
+ */
+public class Connection
 {
-	/**
-	 * getTestTeeTimes - Used as a tester class for the remainder of the program
-	 * 
-	 * @param day - Day to retrieve
-	 * @return - An ArrayList of TeeTimes for the day requested
-	 */
-	public static ArrayList<TeeTime> getTestTeeTimes(int day)
+	private java.sql.Connection connection;
+	private static Connection singleton;
+	
+	private Connection()
 	{
-		// String name, int golfers, int time, String rate, int day, String uid
-
-		// Create a bunch of tee times
-		TeeTime test1 = new TeeTime("Smith", 4, 730, "Regular", 1, "Josh101");
-		TeeTime test2 = new TeeTime("Johnson", 4, 750, "Regular", 1, "Josh101");
-		TeeTime test3 = new TeeTime("Franks", 4, 1230, "Internet", 1, "Josh101");
-		TeeTime test4 = new TeeTime("Williams", 4, 700, "Regular", 2, "Josh101");
-		TeeTime test5 = new TeeTime("Stine", 4, 730, "Hotel", 2, "Josh101");
-		TeeTime test6 = new TeeTime("Boyer", 2, 740, "Internet", 2, "Josh101");
-		TeeTime test7 = new TeeTime("Cooper", 1, 740, "Regular", 2, "Josh101");
-
-		// Add them to ArrayList
-
-		ArrayList<TeeTime> test = new ArrayList<>();
-		test.add(test1);
-		test.add(test2);
-		test.add(test3);
-		test.add(test4);
-		test.add(test5);
-		test.add(test6);
-		test.add(test7);
-
-		// Get rid of the days that are not asked for
-		for (int i = 0; i < test.size(); i++)
+		String host = "jdbc:mysql://sql9.freesqldatabase.com/sql9255339";
+		String dbuser = "sql9255339";
+		String dbpass = "S8EkeFyZuD";
+		try
 		{
-			if (test.get(i).getDay() != day)
-			{
-				test.remove(i);
-				i--;
-			}
-		}
-
-		return test;
-
-	} // End getTestTeeTimes
-
-	public static boolean goodLogin(String userName, String password)
-	{
-		Connection login = Connection.getInstance();
-		ArrayList<Login> temp = login.getLogin();
-		boolean good = false;
-		for (int i = 0; i < temp.size(); i++)
+			this.connection = DriverManager.getConnection(host, dbuser, dbpass);
+		} catch (SQLException e)
 		{
-			if (temp.get(i).getUserName().equals(userName) && temp.get(i).getPassword().equals(password))
-			{
-				good = true;
-				return good;
-			}
+			e.printStackTrace();
 		}
-		return good;
-	}
-
-	public static String getUid(String userName, String password)
-	{
-		Connection login = Connection.getInstance();
-		ArrayList<Login> temp = login.getLogin();
-		for (int i = 0; i < temp.size(); i++)
-		{
-			if (temp.get(i).getUserName().equals(userName) && temp.get(i).getPassword().equals(password))
-			{
-				return temp.get(i).getUID();
-			}
-		}
-		return "";
 	}
 	
-	// Method for getting TeeTimes given a day
-	// public static ArrayList<TeeTimes> getTeeTimes(int day)
-	
-	// Method for adding a TeeTime given a day and time
-	// public static void addTeeTime(TeeTime teeTime)
-	
-	// Method for editing an existing TeeTime given that
-	// public static void editTeeTime(TeeTime teeTime)
-	
-	/**
-	 * timeIsAvailable - Gives a time to check the database against to see if the
-	 * time is available for the number of golfers
-	 * 
-	 * @param timeToCheck - The time of the tee time to check as an int
-	 * @param tempGolfers - The number of golfers to check at that time as an int
-	 * @return a boolean true only if the number to add plus what exists, does not
-	 *         exceed four
-	 */
-	public static boolean timeIsAvailable(int timeToCheck, int tempGolfersToAdd)
+	public static Connection getInstance()
 	{
-		/*
-		 * Method to query database for time and add it to four and such here, something
-		 * like... int existingGolfers = Connection.checkTeeTime(timeToCheck);
-		 * if((existingGolfers + tempGolfers) > 4) return false;
-		 */
-
-		return true;
-	} // End timeIsAvailable
+		if(singleton == null)
+		{
+			singleton = new Connection();
+		}
+		return singleton;
+	}
 	
-} // End class
+	public java.sql.Connection getConnection()
+	{
+		return this.connection;
+	}
+	
+	
+	
+	public ArrayList<Login> getLogin()
+	{
+		try
+		{
+			/*
+			String host = "jdbc:mysql://sql9.freesqldatabase.com/sql9255339";
+			String dbuser = "sql9255339";
+			String dbpass = "S8EkeFyZuD";
+			java.sql.Connection con = DriverManager.getConnection(host, dbuser, dbpass);
+			*/
+			
+			// Select users from database
+			// Statement test = con.createStatement();
+			java.sql.Connection con = this.getConnection();
+			Statement test = con.createStatement();
+			ResultSet rs = test.executeQuery("select * from user");
+			// Create an array of all usernames
+			ArrayList<Login> userArray = new ArrayList<>();
+			while (rs.next())
+			{
 
+				String userName = rs.getString("username");
+				String password = rs.getString("password");
+				String uid = rs.getString("uid");
+				Login tempLogin = new Login(userName, password, uid);
+				userArray.add(tempLogin);
+			}
+			System.out.println(userArray);
+			return userArray;
+		} catch (SQLException error)
+		{
+			System.out.println(error.getMessage());
+			return null;
+		}
+	}
+
+	public static ArrayList<Login> getTeeTimes()
+	{
+		try
+		{
+			String host = "jdbc:mysql://sql9.freesqldatabase.com/sql9255339";
+			String dbuser = "sql9255339";
+			String dbpass = "S8EkeFyZuD";
+			java.sql.Connection con = DriverManager.getConnection(host, dbuser, dbpass);
+
+			// Select tee times from database
+			Statement test = con.createStatement();
+			ResultSet rs = test.executeQuery("select * from teetime");
+			// Create an array of all tee times
+			ArrayList<Login> teeTimeArray = new ArrayList<>();
+			while (rs.next())
+			{
+				String uid = rs.getString("uid");
+				String name = rs.getString("name");
+				int golfers = rs.getInt("golfers");
+				int time = rs.getInt("time");
+				String rate = rs.getString("rate");
+				int day = rs.getInt("day");
+			}
+			System.out.println(teeTimeArray);
+			return teeTimeArray;
+		} catch (SQLException error)
+		{
+			System.out.println(error.getMessage());
+			return null;
+		}
+	}
+}
+// End class
