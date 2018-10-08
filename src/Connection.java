@@ -16,8 +16,8 @@ public class Connection {
 			java.sql.Connection con = DriverManager.getConnection(host, dbuser, dbpass);
 
 			// Select users from database
-			Statement test = con.createStatement();
-			ResultSet rs = test.executeQuery("select * from user");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from user");
 			// Create an array of all usernames
 			ArrayList<Login> userArray = new ArrayList<>();
 			while (rs.next()) {
@@ -36,7 +36,7 @@ public class Connection {
 		}
 	}
 	
-	public static ArrayList<Login> getTeeTimes() {
+	public static ArrayList<TeeTime> getTeeTimes() {
 		try {
 			String host = "jdbc:mysql://sql9.freesqldatabase.com/sql9255339";
 			String dbuser = "sql9255339";
@@ -44,10 +44,10 @@ public class Connection {
 			java.sql.Connection con = DriverManager.getConnection(host, dbuser, dbpass);
 
 			//Select tee times from database
-			Statement test = con.createStatement();
-			ResultSet rs = test.executeQuery("select * from teetime");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from teetime");
 			//Create an array of all tee times
-			ArrayList<Login> teeTimeArray = new ArrayList<>();
+			ArrayList<TeeTime> teeTimeArray = new ArrayList<>();
 			while (rs.next()) {
 				String uid = rs.getString("uid");
 				String name = rs.getString("name");
