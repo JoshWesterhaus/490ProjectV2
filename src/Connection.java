@@ -44,13 +44,12 @@ public class Connection
 		try
 		{
 			java.sql.Connection con = this.getConnection();
-			Statement test = con.createStatement();
-			ResultSet rs = test.executeQuery("select * from user");
+			Statement stmt = con.createStatement();
+			ResultSet rs = stmt.executeQuery("select * from user");
 			// Create an array of all usernames
 			ArrayList<Login> userArray = new ArrayList<>();
 			while (rs.next())
 			{
-
 				String userName = rs.getString("username");
 				String password = rs.getString("password");
 				String uid = rs.getString("uid");
@@ -66,16 +65,18 @@ public class Connection
 		}
 	}
 
-	public ArrayList<Login> getTeeTimes()
+	public ArrayList<TeeTime> getTeeTimes(int dayToGet)
 	{
 		try
 		{
 			java.sql.Connection con = this.getConnection();
+			//Prepared statement
 			// Select tee times from database
-			Statement test = con.createStatement();
-			ResultSet rs = test.executeQuery("select * from teetime");
+			PreparedStatement stmt = con.prepareStatement("select * from teetime where day = ?");
+			stmt.setInt(1, dayToGet);
+			ResultSet rs = stmt.executeQuery();
 			// Create an array of all tee times
-			ArrayList<Login> teeTimeArray = new ArrayList<>();
+			ArrayList<TeeTime> teeTimeArray = new ArrayList<>();
 			while (rs.next())
 			{
 				String uid = rs.getString("uid");
@@ -84,6 +85,8 @@ public class Connection
 				int time = rs.getInt("time");
 				String rate = rs.getString("rate");
 				int day = rs.getInt("day");
+				TeeTime temp = new TeeTime(name, golfers, time, rate, day, uid);
+				teeTimeArray.add(temp);
 			}
 			System.out.println(teeTimeArray);
 			return teeTimeArray;
