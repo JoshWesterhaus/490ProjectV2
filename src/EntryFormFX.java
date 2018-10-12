@@ -10,16 +10,15 @@ import javafx.geometry.*;
  * 
  * @author Team 4
  */
-public class EntryFormFX
-{
+public class EntryFormFX {
 	/**
 	 * display - Displays the entry form
+	 * 
 	 * @param login - The Login information for the current user
 	 * @param day   - The day that the user is entering the tee time for
 	 * @param tee   - The tee time that provides the default starting values
 	 */
-	public static void display(Login login, int day, TeeTime tee, boolean change)
-	{
+	public static void display(Login login, int day, TeeTime tee, boolean change) {
 		Stage window = new Stage();
 		System.out.println(tee);
 
@@ -70,7 +69,7 @@ public class EntryFormFX
 				1240, 1250, 100, 110, 120, 130, 140, 150, 200);
 		timeEntry.setValue(700);
 
-		if(!(tee.equals(null))) // If a tee time was passed in make the data fields what was passed in
+		if (!(tee.equals(null))) // If a tee time was passed in make the data fields what was passed in
 		{
 			nameEntry.setText(tee.getName());
 			rateEntry.setValue(tee.getRate());
@@ -79,37 +78,30 @@ public class EntryFormFX
 		}
 		// Buttons
 		Button closeButton = new Button("Exit");
-		closeButton.setOnAction(e ->
-		{
+		closeButton.setOnAction(e -> {
 			window.close();
 			TeeSheetFX.teeSheet(login, day);
 		});
 
 		Button saveButton = new Button("Save");
-		saveButton.setOnAction(e ->
-		{
+		saveButton.setOnAction(e -> {
 			int tempTime = timeEntry.getValue(), tempGolfers = golferEntry.getValue();
 			String tempName = nameEntry.getText(), tempRate = rateEntry.getValue();
 
-			if (timeIsAvailable(tempTime, tempGolfers))
-			{
+			if (Translator.timeIsAvailable(tempTime, tempGolfers)) {
 				TeeTime newTime = new TeeTime(tempName, tempGolfers, tempTime, tempRate, day, login.getUID());
 				System.out.println(newTime.toString());
 
-				if(change)
-				{
+				if (change) {
 					// Send the time to be changed to the translator -> connection -> database
-					// Translator.changeTeeTime(newTime);
-				}
-				else
-				{
+					Translator.editTeeTime(newTime);
+				} else {
 					// Send the newTime to the translator -> connection -> database
-					// Translator.addTeeTime(newTime);
+					Translator.addTeeTime(newTime);
 				}
 				window.close();
 				TeeSheetFX.teeSheet(login, day);
-			} else
-			{
+			} else {
 				AlertBox.display("Tee time unavailable!");
 			}
 
@@ -135,25 +127,5 @@ public class EntryFormFX
 		window.showAndWait();
 
 	} // End display
-
-	/**
-	 * timeIsAvailable - Gives a time to check the database against to see if the
-	 * time is available for the number of golfers
-	 * 
-	 * @param timeToCheck - The time of the tee time to check as an int
-	 * @param tempGolfers - The number of golfers to check at that time as an int
-	 * @return a boolean true only if the number to add plus what exists, does not
-	 *         exceed four
-	 */
-	private static boolean timeIsAvailable(int timeToCheck, int tempGolfers)
-	{
-		/*
-		 * Method to query database for time and add it to four and such here, something
-		 * like... int existingGolfers = Connection.checkTeeTime(timeToCheck);
-		 * if((existingGolfers + tempGolfers) > 4) return false;
-		 */
-
-		return true;
-	} // End timeIsAvailable
 
 } // End class
