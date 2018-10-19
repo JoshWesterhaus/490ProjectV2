@@ -120,8 +120,13 @@ public class TeeSheetFX extends Application
 		boolean multiple = false;
 		int prevTime = 650;
 
+		if(teeTimesTemp.get(0).getTime() < 700 || teeTimesTemp.get(0).getTime() > 1400)
+			teeTimesTemp.remove(0);
+		
 		for (int time = 700; time <= 1400; time += 10) // To generate all the tee times
 		{
+			
+				
 			if (multiple)
 			{
 				time -= 10;
@@ -187,18 +192,18 @@ public class TeeSheetFX extends Application
 							tempRow = i;
 						}
 					}
-					System.out.println(teeTimes[tempRow].toString() + " DELETED!");
+					System.out.println(teeTimes[tempRow].toString() + " DELETED!!!");
+					// Using the Translator class to delete a tee time
+					// Example: Translator.deleteTime(teeTimes[tempRow]);
 					
-					Translator.deleteTeeTime(teeTimes[tempRow]);
-					
-					AlertBox.display("Tee Time Deleted!");
+					AlertBox.display("Tee Time Deleted!!!");
 				});
 
 				teeTimesTemp.remove(0);
 			}
 			else
 			{
-				teeTimes[row] = new TeeTime();
+				teeTimes[row] = new TeeTime("PlaceHolder", 0, 0, "None", day, "Tester");
 			}
 
 			if (time < 1200)
@@ -232,10 +237,10 @@ public class TeeSheetFX extends Application
 		addTeeTime.setOnAction(e ->
 		{
 			window.close();
-			EntryFormFX.display(login, dayEntry.getValue(), new TeeTime(), false);
+			EntryFormFX.display(login, dayEntry.getValue(), new TeeTime("PlaceHolder", 0, 0, "None", day, "Tester"), false);
 		});
 
-		Button logOut = new Button("Log Out");
+		Button logOut = new Button("Log out");
 		logOut.setOnAction(e ->
 		{
 			window.close();

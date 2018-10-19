@@ -1,6 +1,7 @@
 /**
  * TeeTime - A tee time for a tee sheet
- * @author Team 4 
+ * 
+ * @author Team 4
  */
 public class TeeTime
 {
@@ -16,7 +17,7 @@ public class TeeTime
 	/**
 	 * TeeTime - Default constructor(DO NOT USE!!!)
 	 */
-	public TeeTime()
+	private TeeTime()
 	{
 		name = "";
 		golfers = 0;
@@ -28,12 +29,13 @@ public class TeeTime
 
 	/**
 	 * TeeTime - Constructor for a tee time
-	 * @param name - Name of the golfer as a String
+	 * 
+	 * @param name    - Name of the golfer as a String
 	 * @param golfers - Number of golfers in that tee time as an int
-	 * @param time - The tee time as an int
-	 * @param rate - The rate the golfers booked as a String
-	 * @param day - The day the golfers are playing on as an int
-	 * @param uid - The user id of the person booking the tee time as a String
+	 * @param time    - The tee time as an int
+	 * @param rate    - The rate the golfers booked as a String
+	 * @param day     - The day the golfers are playing on as an int
+	 * @param uid     - The user id of the person booking the tee time as a String
 	 */
 	public TeeTime(String name, int golfers, int time, String rate, int day, String uid)
 	{

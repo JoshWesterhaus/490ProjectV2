@@ -20,7 +20,6 @@ public class EntryFormFX {
 	 */
 	public static void display(Login login, int day, TeeTime tee, boolean change) {
 		Stage window = new Stage();
-		System.out.println(tee);
 
 		window.initModality(Modality.APPLICATION_MODAL);
 
@@ -69,7 +68,7 @@ public class EntryFormFX {
 				1240, 1250, 100, 110, 120, 130, 140, 150, 200);
 		timeEntry.setValue(700);
 
-		if (!(tee.equals(null))) // If a tee time was passed in make the data fields what was passed in
+		if (!(tee.getName().equals("PlaceHolder"))) // If a tee time was passed in make the data fields what was passed in
 		{
 			nameEntry.setText(tee.getName());
 			rateEntry.setValue(tee.getRate());
@@ -95,14 +94,18 @@ public class EntryFormFX {
 				if (change) {
 					// Send the time to be changed to the translator -> connection -> database
 					Translator.editTeeTime(newTime);
+					window.close();
+					TeeSheetFX.teeSheet(login, day);
 				} else {
 					// Send the newTime to the translator -> connection -> database
 					Translator.addTeeTime(newTime);
+					window.close();
+					TeeSheetFX.teeSheet(login, day);
 				}
-				window.close();
-				TeeSheetFX.teeSheet(login, day);
 			} else {
 				AlertBox.display("Tee time unavailable!");
+				window.close();
+				TeeSheetFX.teeSheet(login, day);
 			}
 
 		}); // End saveButton action

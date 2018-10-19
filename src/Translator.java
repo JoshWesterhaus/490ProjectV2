@@ -27,7 +27,6 @@ public class Translator
 		{
 			for (int j = 1; j < (s - i); j++)
 			{
-				System.out.println(j);
 				if (teeArray.get(j - 1).getTime() > teeArray.get(j).getTime())
 				{
 					temp = teeArray.get(j - 1);
@@ -76,13 +75,6 @@ public class Translator
 		con.addTeeTime(teeTime);
 	}
 
-	// Method for deleting an existing TeeTime
-	public static void deleteTeeTime(TeeTime teeTime)
-	{
-		Connection con = Connection.getInstance();
-		con.deleteTeeTime(teeTime);
-	}
-	
 	// Method for editing an existing TeeTime given that
 	public static void editTeeTime(TeeTime teeTime)
 	{
@@ -105,6 +97,43 @@ public class Translator
 		 * like... int existingGolfers = Connection.checkTeeTime(day, timeToCheck);
 		 * if((existingGolfers + tempGolfers) > 4) return false;
 		 */
+		Connection con = Connection.getInstance();
+		ArrayList<TeeTime> teeTimes = con.getTeeTimes(day);
+
+		for (int i = 0; i < teeTimes.size(); i++)
+		{
+			System.out.println("Time: " + timeToCheck + "  Array time to check: " + teeTimes.get(i).getTime());
+			if (teeTimes.get(i).getTime() == timeToCheck)
+			{
+				if (i != teeTimes.size() - 1 && teeTimes.get(i).getTime() != teeTimes.get(i + 1).getTime())
+				{
+					System.out.println("Tee time matches next tee time");
+					if ((teeTimes.get(i).getGolfers() + tempGolfersToAdd) > 4)
+						return false;
+					else
+						return true;
+
+				} else if (i != teeTimes.size() - 1 && teeTimes.get(i).getTime() == teeTimes.get(i + 1).getTime())
+				{
+					System.out.println("Tee time DOES NOT match next tee time");
+
+					if ((teeTimes.get(i).getGolfers() + teeTimes.get(i + 1).getGolfers() + tempGolfersToAdd) > 4)
+						return false;
+					else
+						return true;
+
+				} else
+				{
+					System.out.println("Last Tee time checked");
+
+					if ((teeTimes.get(i).getGolfers() + tempGolfersToAdd) > 4)
+						return false;
+					else
+						return true;
+				}
+			}
+		}
+		System.out.println("No matches in database.  Time is available");
 
 		return true;
 	} // End timeIsAvailable

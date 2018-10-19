@@ -97,26 +97,6 @@ public class Connection
 		}
 	}
 
-	public void deleteTeeTime(TeeTime teeTime)
-	{
-		try
-		{
-			java.sql.Connection con = this.getConnection();
-			// Prepared statement
-			// Delete tee time from database
-			PreparedStatement stmt = con.prepareStatement("delete from teetime where uid = ? and"
-					+ " golfers = ? and time = ? and day = ?");
-			stmt.setString(1, teeTime.getUid());
-			stmt.setInt(2, teeTime.getGolfers());
-			stmt.setInt(3, teeTime.getTime());
-			stmt.setInt(4, teeTime.getDay());
-			stmt.executeUpdate();
-		} catch (SQLException error)
-		{
-			System.out.println(error.getMessage());
-		}
-	}
-	
 	public void addTeeTime(TeeTime teeTime)
 	{
 		try
@@ -124,10 +104,13 @@ public class Connection
 			java.sql.Connection con = this.getConnection();
 			// Prepared statement
 			// Insert teeTime into database
+			System.out.println(teeTime);
 			PreparedStatement stmt = con.prepareStatement("insert into teetime values(\"" + teeTime.getUid() + "\", \""
 					+ teeTime.getName() + "\", " + teeTime.getGolfers() + ", " + teeTime.getTime() + ", "
 					+ teeTime.getDay() + ",\"" + teeTime.getRate() + "\");");
 			stmt.executeUpdate();
+			System.out.println(teeTime);
+
 		} catch (SQLException error)
 		{
 			System.out.println(error.getMessage());
