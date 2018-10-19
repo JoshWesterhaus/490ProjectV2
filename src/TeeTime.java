@@ -17,6 +17,7 @@ public class TeeTime
 	/**
 	 * TeeTime - Default constructor(DO NOT USE!!!)
 	 */
+	@SuppressWarnings("unused")
 	private TeeTime()
 	{
 		name = "";

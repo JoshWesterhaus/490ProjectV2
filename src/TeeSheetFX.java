@@ -18,7 +18,7 @@ public class TeeSheetFX extends Application
 	static Button[] editButtons = new Button[50];
 	static Button[] deleteButtons = new Button[50];
 	static TeeTime[] teeTimes = new TeeTime[50];
-	
+
 	public static void main(String[] args)
 	{
 		System.out.println("Started");
@@ -34,8 +34,9 @@ public class TeeSheetFX extends Application
 
 	/**
 	 * teeSheet - The tee sheet to be displayed given a valid login and day
+	 * 
 	 * @param login - The login credentials of the user
-	 * @param day - The day to login
+	 * @param day   - The day to login
 	 */
 	static void teeSheet(Login login, int day)
 	{
@@ -105,7 +106,7 @@ public class TeeSheetFX extends Application
 		// Retrieve the tee times for the day being displayed
 		ArrayList<TeeTime> teeTimesTemp = new ArrayList<>();
 		teeTimesTemp = Translator.getTeeTimes(day);
-		
+
 		// Get the actual tee times from the database
 		// teeTimesTemp = Translator.getTeeTimes(day);
 
@@ -116,17 +117,14 @@ public class TeeSheetFX extends Application
 			System.out.println(teeTimesTemp.get(i).toString());
 		}
 		System.out.println("------------");
-		
+
 		boolean multiple = false;
 		int prevTime = 650;
 
-		if(teeTimesTemp.get(0).getTime() < 700 || teeTimesTemp.get(0).getTime() > 1400)
-			teeTimesTemp.remove(0);
-		
+
 		for (int time = 700; time <= 1400; time += 10) // To generate all the tee times
 		{
-			
-				
+
 			if (multiple)
 			{
 				time -= 10;
@@ -143,7 +141,7 @@ public class TeeSheetFX extends Application
 				Text teeGolfers = new Text(teeTimesTemp.get(0).getGolfers() + "");
 				teeGolfers.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 				teeGrid.add(teeGolfers, 10, row);
-				
+
 				Text teeRate = new Text(teeTimesTemp.get(0).getRate());
 				teeRate.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 				teeGrid.add(teeRate, 16, row);
@@ -151,7 +149,7 @@ public class TeeSheetFX extends Application
 				Text teeCost = new Text(rateToCost(teeTimesTemp.get(0).getRate()));
 				teeCost.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 				teeGrid.add(teeCost, 20, row);
-				
+
 				// if the next time is same as the current time
 				if (teeTimesTemp.size() > 1 && teeTimesTemp.get(0).getTime() == teeTimesTemp.get(1).getTime())
 				{
@@ -164,12 +162,13 @@ public class TeeSheetFX extends Application
 				Button edit = new Button("Edit");
 				editButtons[row] = edit;
 				teeGrid.add(editButtons[row], 22, row);
-				editButtons[row].setOnAction(e -> {
+				editButtons[row].setOnAction(e ->
+				{
 					Button tempEB = (Button) e.getSource();
 					int tempRow = 0;
-					for(int i = 0; i < editButtons.length; i++) // To find a match for the button to find the row
+					for (int i = 0; i < editButtons.length; i++) // To find a match for the button to find the row
 					{
-						if(tempEB.equals(editButtons[i]))
+						if (tempEB.equals(editButtons[i]))
 						{
 							tempRow = i;
 						}
@@ -178,30 +177,32 @@ public class TeeSheetFX extends Application
 					window.close();
 					EntryFormFX.display(login, day, teeTimes[tempRow], true);
 				});
-				
+
 				Button delete = new Button("Delete");
 				deleteButtons[row] = delete;
 				teeGrid.add(delete, 23, row);
-				deleteButtons[row].setOnAction(e -> {
+				deleteButtons[row].setOnAction(e ->
+				{
 					Button tempEB = (Button) e.getSource();
 					int tempRow = 0;
-					for(int i = 0; i < deleteButtons.length; i++) // To find a match for the button to find the row
+					for (int i = 0; i < deleteButtons.length; i++) // To find a match for the button to find the row
 					{
-						if(tempEB.equals(deleteButtons[i]))
+						if (tempEB.equals(deleteButtons[i]))
 						{
 							tempRow = i;
 						}
 					}
 					System.out.println(teeTimes[tempRow].toString() + " DELETED!");
-					
+
 					Translator.deleteTeeTime(teeTimes[tempRow]);
-					
+
 					AlertBox.display("Tee Time Deleted!");
+					window.close();
+					TeeSheetFX.teeSheet(login, dayEntry.getValue());
 				});
 
 				teeTimesTemp.remove(0);
-			}
-			else
+			} else
 			{
 				teeTimes[row] = new TeeTime("PlaceHolder", 0, 0, "None", day, "Tester");
 			}
@@ -237,7 +238,8 @@ public class TeeSheetFX extends Application
 		addTeeTime.setOnAction(e ->
 		{
 			window.close();
-			EntryFormFX.display(login, dayEntry.getValue(), new TeeTime("PlaceHolder", 0, 0, "None", day, "Tester"), false);
+			EntryFormFX.display(login, dayEntry.getValue(), new TeeTime("PlaceHolder", 0, 0, "None", day, "Tester"),
+					false);
 		});
 
 		Button logOut = new Button("Log Out");
@@ -254,7 +256,7 @@ public class TeeSheetFX extends Application
 			window.close();
 			TeeSheetFX.teeSheet(login, dayEntry.getValue());
 		});
-		
+
 		HBox bottomOptions = new HBox(10);
 		bottomOptions.setPadding(new Insets(25, 25, 25, 25));
 		bottomOptions.setAlignment(Pos.BOTTOM_RIGHT);
