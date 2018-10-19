@@ -187,11 +187,11 @@ public class TeeSheetFX extends Application
 							tempRow = i;
 						}
 					}
-					System.out.println(teeTimes[tempRow].toString() + " DELETED!!!");
-					// Using the Translator class to delete a tee time
-					// Example: Translator.deleteTime(teeTimes[tempRow]);
+					System.out.println(teeTimes[tempRow].toString() + " DELETED!");
 					
-					AlertBox.display("Tee Time Deleted!!!");
+					Translator.deleteTeeTime(teeTimes[tempRow]);
+					
+					AlertBox.display("Tee Time Deleted!");
 				});
 
 				teeTimesTemp.remove(0);
@@ -235,7 +235,7 @@ public class TeeSheetFX extends Application
 			EntryFormFX.display(login, dayEntry.getValue(), new TeeTime(), false);
 		});
 
-		Button logOut = new Button("Log out");
+		Button logOut = new Button("Log Out");
 		logOut.setOnAction(e ->
 		{
 			window.close();
