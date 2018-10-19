@@ -88,7 +88,7 @@ public class EntryFormFX {
 			int tempTime = timeEntry.getValue(), tempGolfers = golferEntry.getValue();
 			String tempName = nameEntry.getText(), tempRate = rateEntry.getValue();
 
-			if (Translator.timeIsAvailable(tempTime, tempGolfers)) {
+			if (Translator.timeIsAvailable(day, tempTime, tempGolfers)) {
 				TeeTime newTime = new TeeTime(tempName, tempGolfers, tempTime, tempRate, day, login.getUID());
 				System.out.println(newTime.toString());
 

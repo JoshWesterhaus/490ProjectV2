@@ -104,7 +104,7 @@ public class TeeSheetFX extends Application
 
 		// Retrieve the tee times for the day being displayed
 		ArrayList<TeeTime> teeTimesTemp = new ArrayList<>();
-		teeTimesTemp = Translator.getTestTeeTimes(day);
+		teeTimesTemp = Translator.getTeeTimes(day);
 		
 		// Get the actual tee times from the database
 		// teeTimesTemp = Translator.getTeeTimes(day);
@@ -160,7 +160,6 @@ public class TeeSheetFX extends Application
 				editButtons[row] = edit;
 				teeGrid.add(editButtons[row], 22, row);
 				editButtons[row].setOnAction(e -> {
-					// Future functionality to edit a tee time
 					Button tempEB = (Button) e.getSource();
 					int tempRow = 0;
 					for(int i = 0; i < editButtons.length; i++) // To find a match for the button to find the row
