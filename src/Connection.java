@@ -116,6 +116,26 @@ public class Connection
 			System.out.println(error.getMessage());
 		}
 	}
+	
+	public void deleteTeeTime(TeeTime teeTime)
+	{
+		try
+		{
+			java.sql.Connection con = this.getConnection();
+			// Prepared statement
+			// Delete tee time from database
+			PreparedStatement stmt = con.prepareStatement("delete from teetime where uid = ? and"
+					+ " golfers = ? and time = ? and day = ?");
+			stmt.setString(1, teeTime.getUid());
+			stmt.setInt(2, teeTime.getGolfers());
+			stmt.setInt(3, teeTime.getTime());
+			stmt.setInt(4, teeTime.getDay());
+			stmt.executeUpdate();
+		} catch (SQLException error)
+		{
+			System.out.println(error.getMessage());
+		}
+	}
 
 }
 // End class
