@@ -104,19 +104,16 @@ public class Connection
 			java.sql.Connection con = this.getConnection();
 			// Prepared statement
 			// Insert teeTime into database
-			System.out.println(teeTime);
 			PreparedStatement stmt = con.prepareStatement("insert into teetime values(\"" + teeTime.getUid() + "\", \""
 					+ teeTime.getName() + "\", " + teeTime.getGolfers() + ", " + teeTime.getTime() + ", "
 					+ teeTime.getDay() + ",\"" + teeTime.getRate() + "\");");
 			stmt.executeUpdate();
-			System.out.println(teeTime);
-
 		} catch (SQLException error)
 		{
 			System.out.println(error.getMessage());
 		}
 	}
-	
+
 	public void deleteTeeTime(TeeTime teeTime)
 	{
 		try
@@ -124,12 +121,35 @@ public class Connection
 			java.sql.Connection con = this.getConnection();
 			// Prepared statement
 			// Delete tee time from database
-			PreparedStatement stmt = con.prepareStatement("delete from teetime where uid = ? and"
-					+ " golfers = ? and time = ? and day = ?");
+			PreparedStatement stmt = con.prepareStatement(
+					"delete from teetime where uid = ? and" + " golfers = ? and time = ? and day = ?");
 			stmt.setString(1, teeTime.getUid());
 			stmt.setInt(2, teeTime.getGolfers());
 			stmt.setInt(3, teeTime.getTime());
 			stmt.setInt(4, teeTime.getDay());
+			stmt.executeUpdate();
+		} catch (SQLException error)
+		{
+			System.out.println(error.getMessage());
+		}
+	}
+
+	public void editTeeTime(TeeTime oldTime, TeeTime newTime)
+	{
+		try
+		{
+			java.sql.Connection con = this.getConnection();
+			// Prepared statement
+			// update a previously stored teetime
+			PreparedStatement stmt = con.prepareStatement(
+					"update teetime set name = ?, golfers = ?, time = ?, rate = ? where name = ? and time = ? and day = ?");
+			stmt.setString(1, newTime.getName());
+			stmt.setInt(2, newTime.getGolfers());
+			stmt.setInt(3, newTime.getTime());
+			stmt.setString(4, newTime.getRate());
+			stmt.setString(5, oldTime.getName());
+			stmt.setInt(6, oldTime.getTime());
+			stmt.setInt(7, oldTime.getDay());
 			stmt.executeUpdate();
 		} catch (SQLException error)
 		{

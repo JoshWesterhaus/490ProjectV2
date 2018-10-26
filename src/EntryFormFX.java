@@ -10,7 +10,8 @@ import javafx.geometry.*;
  * 
  * @author Team 4
  */
-public class EntryFormFX {
+public class EntryFormFX
+{
 	/**
 	 * display - Displays the entry form
 	 * 
@@ -18,7 +19,8 @@ public class EntryFormFX {
 	 * @param day   - The day that the user is entering the tee time for
 	 * @param tee   - The tee time that provides the default starting values
 	 */
-	public static void display(Login login, int day, TeeTime tee, boolean change) {
+	public static void display(Login login, int day, TeeTime tee, boolean change)
+	{
 		Stage window = new Stage();
 
 		window.initModality(Modality.APPLICATION_MODAL);
@@ -68,7 +70,8 @@ public class EntryFormFX {
 				1240, 1250, 100, 110, 120, 130, 140, 150, 200);
 		timeEntry.setValue(700);
 
-		if (!(tee.getName().equals("PlaceHolder"))) // If a tee time was passed in make the data fields what was passed in
+		if (!(tee.getName().equals("PlaceHolder"))) // If a tee time was passed in make the data fields what was passed
+													// in
 		{
 			nameEntry.setText(tee.getName());
 			rateEntry.setValue(tee.getRate());
@@ -77,32 +80,38 @@ public class EntryFormFX {
 		}
 		// Buttons
 		Button closeButton = new Button("Exit");
-		closeButton.setOnAction(e -> {
+		closeButton.setOnAction(e ->
+		{
 			window.close();
 			TeeSheetFX.teeSheet(login, day);
 		});
 
 		Button saveButton = new Button("Save");
-		saveButton.setOnAction(e -> {
+		saveButton.setOnAction(e ->
+		{
 			int tempTime = timeEntry.getValue(), tempGolfers = golferEntry.getValue();
 			String tempName = nameEntry.getText(), tempRate = rateEntry.getValue();
 
-			if (Translator.timeIsAvailable(day, tempTime, tempGolfers)) {
+			if (Translator.timeIsAvailable(day, tempTime, tempGolfers))
+			{
 				TeeTime newTime = new TeeTime(tempName, tempGolfers, tempTime, tempRate, day, login.getUID());
 				System.out.println(newTime.toString());
 
-				if (change) {
+				if (change)
+				{
 					// Send the time to be changed to the translator -> connection -> database
-					Translator.editTeeTime(newTime);
+					Translator.editTeeTime(tee, newTime);
 					window.close();
 					TeeSheetFX.teeSheet(login, day);
-				} else {
+				} else
+				{
 					// Send the newTime to the translator -> connection -> database
 					Translator.addTeeTime(newTime);
 					window.close();
 					TeeSheetFX.teeSheet(login, day);
 				}
-			} else {
+			} else
+			{
 				AlertBox.display("Tee time unavailable!");
 				window.close();
 				TeeSheetFX.teeSheet(login, day);

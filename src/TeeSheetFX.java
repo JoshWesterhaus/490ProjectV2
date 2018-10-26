@@ -121,7 +121,6 @@ public class TeeSheetFX extends Application
 		boolean multiple = false;
 		int prevTime = 650;
 
-
 		for (int time = 700; time <= 1400; time += 10) // To generate all the tee times
 		{
 

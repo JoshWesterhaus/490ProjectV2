@@ -5,8 +5,10 @@ import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
 /**
  * LoginFX - The class that displays the JavaFX login screen
+ * 
  * @author Team 4
  */
 public class LoginFX
@@ -15,6 +17,7 @@ public class LoginFX
 
 	/**
 	 * display - Displays the Login screen
+	 * 
 	 * @return - Returns Login credentials, if valid.
 	 */
 	public static Login display()
@@ -52,23 +55,22 @@ public class LoginFX
 		Button btn = new Button("Sign in");
 		btn.setOnAction(e ->
 		{
-			String tempUserName =  userTextField.getText();
-			String tempPassword =  pwBox.getText();
+			String tempUserName = userTextField.getText();
+			String tempPassword = pwBox.getText();
 			boolean goodLogin = Translator.goodLogin(tempUserName, tempPassword);
-			if(goodLogin)
+			if (goodLogin)
 			{
-				
-				login = new Login(tempUserName, tempPassword, Translator.getUid(tempUserName, tempPassword)); 
+
+				login = new Login(tempUserName, tempPassword, Translator.getUid(tempUserName, tempPassword));
 				TeeSheetFX.teeSheet(login, 1);
 				window.close();
-			}
-			else
+			} else
 			{
 				AlertBox.display("Login not allowed!");
 			}
 		});
 		btn.setDefaultButton(true);
-		
+
 		HBox hbBtn = new HBox(10);
 		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);
 		hbBtn.getChildren().add(btn);
@@ -78,12 +80,12 @@ public class LoginFX
 		grid.add(actiontarget, 1, 6);
 
 		loginScene = new Scene(grid, 300, 275);
-	
+
 		window.setScene(loginScene);
 		window.showAndWait();
 
 		return login;
 
 	} // End display
-	
+
 } // End class

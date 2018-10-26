@@ -74,7 +74,7 @@ public class Translator
 		Connection con = Connection.getInstance();
 		con.addTeeTime(teeTime);
 	}
-	
+
 	// Method for deleting an existing TeeTime
 	public static void deleteTeeTime(TeeTime teeTime)
 	{
@@ -82,10 +82,11 @@ public class Translator
 		con.deleteTeeTime(teeTime);
 	}
 
-	// Method for editing an existing TeeTime given that
-	public static void editTeeTime(TeeTime teeTime)
+	// Method for editing an existing TeeTime
+	public static void editTeeTime(TeeTime oldTime, TeeTime newTime)
 	{
-
+		Connection con = Connection.getInstance();
+		con.editTeeTime(oldTime, newTime);
 	}
 
 	/**
