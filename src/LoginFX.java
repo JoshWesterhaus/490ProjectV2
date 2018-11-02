@@ -1,6 +1,8 @@
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Modality;
@@ -27,7 +29,7 @@ public class LoginFX
 
 		window.initModality(Modality.APPLICATION_MODAL);
 
-		window.setMinWidth(300);
+		window.setMinWidth(500);
 		window.setTitle("Golf Course Login");
 
 		GridPane grid = new GridPane();
@@ -41,16 +43,16 @@ public class LoginFX
 		grid.add(scenetitle, 0, 0, 2, 1);
 
 		Label userName = new Label("User Name:");
-		grid.add(userName, 0, 1);
+		grid.add(userName, 0, 1, 2, 1);
 
 		TextField userTextField = new TextField(); // Text field for user name
-		grid.add(userTextField, 1, 1);
+		grid.add(userTextField, 2, 1, 6, 1);
 
 		Label pw = new Label("Password:");
-		grid.add(pw, 0, 2);
+		grid.add(pw, 0, 2, 2, 1);
 
 		PasswordField pwBox = new PasswordField(); // Password field for password
-		grid.add(pwBox, 1, 2);
+		grid.add(pwBox, 2, 2, 6, 1);
 
 		Button btn = new Button("Sign in");
 		btn.setOnAction(e ->
@@ -70,6 +72,11 @@ public class LoginFX
 			}
 		});
 		btn.setDefaultButton(true);
+
+		// Image Adding
+		Image image = new Image("file:TeamFourLogo.png");
+		ImageView theImage = new ImageView(image);
+		grid.add(theImage, 9, 0, 1, 9);
 
 		HBox hbBtn = new HBox(10);
 		hbBtn.setAlignment(Pos.BOTTOM_RIGHT);

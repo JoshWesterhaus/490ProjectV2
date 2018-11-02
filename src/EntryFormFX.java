@@ -91,6 +91,9 @@ public class EntryFormFX
 		{
 			int tempTime = timeEntry.getValue(), tempGolfers = golferEntry.getValue();
 			String tempName = nameEntry.getText(), tempRate = rateEntry.getValue();
+			
+			if(tempTime < 700)
+				tempTime += 1200;
 
 			if (Translator.timeIsAvailable(day, tempTime, tempGolfers))
 			{

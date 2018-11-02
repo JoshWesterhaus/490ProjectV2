@@ -3,6 +3,8 @@ import javafx.application.Application;
 import javafx.geometry.*;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.text.*;
 import javafx.stage.Stage;
@@ -51,7 +53,16 @@ public class TeeSheetFX extends Application
 		topDisplay.setAlignment(Pos.TOP_LEFT);
 		topDisplay.setHgap(10);
 		topDisplay.setVgap(10);
-		topDisplay.setPadding(new Insets(1, 25, 25, 25));
+		topDisplay.setPadding(new Insets(25, 25, 5, 25));
+
+		// Image for the Tee sheet
+		Image image = new Image("file:TeamFourLogo.png");
+		ImageView theImage = new ImageView(image);
+		theImage.setFitWidth(85);
+		theImage.setPreserveRatio(true);
+		theImage.setSmooth(true);
+		theImage.setCache(true);
+		topDisplay.add(theImage, 27, 0, 1, 3);
 
 		// Text for the tee sheet
 		Text scenetitle2 = new Text("America Country Club");
@@ -97,7 +108,7 @@ public class TeeSheetFX extends Application
 		teeGrid.setAlignment(Pos.TOP_LEFT);
 		teeGrid.setHgap(10);
 		teeGrid.setVgap(10);
-		teeGrid.setPadding(new Insets(25, 25, 25, 25));
+		teeGrid.setPadding(new Insets(5, 25, 5, 25));
 
 		// Add the tee times here through a loop
 		String temp = "";
@@ -249,7 +260,7 @@ public class TeeSheetFX extends Application
 		});
 
 		Button changeDay = new Button("Change Day");
-		topDisplay.add(changeDay, 19, 1, 6, 1);
+		topDisplay.add(changeDay, 19, 1, 9, 1);
 		changeDay.setOnAction(e ->
 		{
 			window.close();
@@ -257,7 +268,7 @@ public class TeeSheetFX extends Application
 		});
 
 		HBox bottomOptions = new HBox(10);
-		bottomOptions.setPadding(new Insets(25, 25, 25, 25));
+		bottomOptions.setPadding(new Insets(5, 25, 25, 25));
 		bottomOptions.setAlignment(Pos.BOTTOM_RIGHT);
 		bottomOptions.getChildren().addAll(addTeeTime, logOut);
 

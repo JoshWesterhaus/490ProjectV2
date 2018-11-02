@@ -13,7 +13,6 @@ import javafx.stage.Stage;
 
 /**
  * AlertBox - A window that pops up to display a message
- * 
  * @author Team 4
  */
 public class AlertBox

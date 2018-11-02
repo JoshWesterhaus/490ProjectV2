@@ -100,11 +100,6 @@ public class Translator
 	 */
 	public static boolean timeIsAvailable(int day, int timeToCheck, int tempGolfersToAdd)
 	{
-		/*
-		 * Method to query database for time and add it to four and such here, something
-		 * like... int existingGolfers = Connection.checkTeeTime(day, timeToCheck);
-		 * if((existingGolfers + tempGolfers) > 4) return false;
-		 */
 		Connection con = Connection.getInstance();
 		ArrayList<TeeTime> teeTimes = con.getTeeTimes(day);
 
