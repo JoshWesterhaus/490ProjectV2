@@ -17,12 +17,14 @@ import javafx.stage.Stage;
  */
 public class TeeSheetFX extends Application
 {
-	static Button[] editButtons = new Button[50];
-	static Button[] deleteButtons = new Button[50];
-	static TeeTime[] teeTimes = new TeeTime[50];
+	static Button[] editButtons = new Button[100];
+	static Button[] deleteButtons = new Button[100];
+	static Button[] posButtons = new Button[100];
+	static TeeTime[] teeTimes = new TeeTime[100];
 
 	public static void main(String[] args)
 	{
+		//String name, int golfers, int time, String rate, int day, String uid
 		System.out.println("Started");
 		launch(args);
 		System.out.println("Ended");
@@ -45,6 +47,7 @@ public class TeeSheetFX extends Application
 		System.out.println("Tee sheet Displayed");
 
 		Stage window = new Stage();
+		window.setMinWidth(725);
 		window.setTitle("Golf Course Tee Sheet");
 		Scene teeSheetScene;
 
@@ -111,15 +114,12 @@ public class TeeSheetFX extends Application
 		teeGrid.setPadding(new Insets(5, 25, 5, 25));
 
 		// Add the tee times here through a loop
-		String temp = "";
+		String tempTime = "";
 		int row = 0;
 
 		// Retrieve the tee times for the day being displayed
 		ArrayList<TeeTime> teeTimesTemp = new ArrayList<>();
 		teeTimesTemp = Translator.getTeeTimes(day);
-
-		// Get the actual tee times from the database
-		// teeTimesTemp = Translator.getTeeTimes(day);
 
 		// Display the array
 		System.out.println("------------");
@@ -129,116 +129,147 @@ public class TeeSheetFX extends Application
 		}
 		System.out.println("------------");
 
-		boolean multiple = false;
+		int time = 700;
 		int prevTime = 650;
-
-		for (int time = 700; time <= 1400; time += 10) // To generate all the tee times
+		while (time <= 1400) // To generate all the tee times
 		{
-
-			if (multiple)
+			// If there are tee times in the ArrayList
+			if (teeTimesTemp.size() != 0)
 			{
-				time -= 10;
-			}
-			// If we are not at the end of the ArrayList and the index matches the time at
-			// the index
-			if (teeTimesTemp.size() != 0 && time == teeTimesTemp.get(0).getTime())
-			{
-				teeTimes[row] = teeTimesTemp.get(0);
-				Text teeName = new Text(teeTimesTemp.get(0).getName());
-				teeName.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-				teeGrid.add(teeName, 2, row);
 
-				Text teeGolfers = new Text(teeTimesTemp.get(0).getGolfers() + "");
-				teeGolfers.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-				teeGrid.add(teeGolfers, 10, row);
-
-				Text teeRate = new Text(teeTimesTemp.get(0).getRate());
-				teeRate.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-				teeGrid.add(teeRate, 16, row);
-
-				Text teeCost = new Text(rateToCost(teeTimesTemp.get(0).getRate()));
-				teeCost.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
-				teeGrid.add(teeCost, 20, row);
-
-				// if the next time is same as the current time
-				if (teeTimesTemp.size() > 1 && teeTimesTemp.get(0).getTime() == teeTimesTemp.get(1).getTime())
+				// If the previous time is equal to the current time
+				if (teeTimesTemp.get(0).getTime() == prevTime)
 				{
-					multiple = true;
-				} else
-				{
-					multiple = false;
+					if ((time / 10) % 10 == 0)
+					{
+						time -= 50;
+					} else
+					{
+						time -= 10;
+					}
 				}
-				// Edit - delete buttons
-				Button edit = new Button("Edit");
-				editButtons[row] = edit;
-				teeGrid.add(editButtons[row], 22, row);
-				editButtons[row].setOnAction(e ->
+
+				// If the tee times match
+				if (time == teeTimesTemp.get(0).getTime())
 				{
-					Button tempEB = (Button) e.getSource();
-					int tempRow = 0;
-					for (int i = 0; i < editButtons.length; i++) // To find a match for the button to find the row
-					{
-						if (tempEB.equals(editButtons[i]))
-						{
-							tempRow = i;
-						}
-					}
-					System.out.println(teeTimes[tempRow].toString());
-					window.close();
-					EntryFormFX.display(login, day, teeTimes[tempRow], true);
-				});
+					teeTimes[row] = teeTimesTemp.get(0);
 
-				Button delete = new Button("Delete");
-				deleteButtons[row] = delete;
-				teeGrid.add(delete, 23, row);
-				deleteButtons[row].setOnAction(e ->
+					Text teeName = new Text(teeTimesTemp.get(0).getName());
+					teeName.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
+					teeGrid.add(teeName, 2, row);
+
+					Text teeGolfers = new Text(teeTimesTemp.get(0).getGolfers() + "");
+					teeGolfers.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
+					teeGrid.add(teeGolfers, 10, row);
+
+					Text teeRate = new Text(teeTimesTemp.get(0).getRate());
+					teeRate.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
+					teeGrid.add(teeRate, 16, row);
+
+					Text teeCost = new Text(rateToCost(teeTimesTemp.get(0).getRate()));
+					teeCost.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
+					teeGrid.add(teeCost, 20, row);
+
+					// Edit - delete buttons
+					Button edit = new Button("Edit");
+					editButtons[row] = edit;
+					teeGrid.add(editButtons[row], 22, row);
+					editButtons[row].setOnAction(e ->
+					{
+						Button tempEB = (Button) e.getSource();
+						int tempRow = 0;
+						for (int i = 0; i < editButtons.length; i++) // To find a match for the button to find the row
+						{
+							if (tempEB.equals(editButtons[i]))
+							{
+								tempRow = i;
+							}
+						}
+						window.close();
+						EntryFormFX.display(login, day, teeTimes[tempRow], true);
+					});
+
+					Button delete = new Button("Delete");
+					deleteButtons[row] = delete;
+					teeGrid.add(delete, 23, row);
+					deleteButtons[row].setOnAction(e ->
+					{
+						Button tempEB = (Button) e.getSource();
+						int tempRow = 0;
+						for (int i = 0; i < deleteButtons.length; i++) // To find a match for the button to find the row
+						{
+							if (tempEB.equals(deleteButtons[i]))
+							{
+								tempRow = i;
+							}
+						}
+						Translator.deleteTeeTime(teeTimes[tempRow]);
+
+						AlertBox.display("Tee Time Deleted!");
+						window.close();
+						TeeSheetFX.teeSheet(login, dayEntry.getValue());
+					});
+					
+					Button pos = new Button("POS");
+					posButtons[row] = pos;
+					teeGrid.add(pos, 24, row);
+					posButtons[row].setOnAction(e ->
+					{
+						Button tempEB = (Button) e.getSource();
+						int tempRow = 0;
+						for (int i = 0; i < posButtons.length; i++) // To find a match for the button to find the row
+						{
+							if (tempEB.equals(posButtons[i]))
+							{
+								tempRow = i;
+							}
+						}
+						window.close();
+						POS.display(teeTimes[tempRow], login);
+						
+					});
+					teeTimesTemp.remove(0);
+
+				} else // If the tee times do not match
 				{
-					Button tempEB = (Button) e.getSource();
-					int tempRow = 0;
-					for (int i = 0; i < deleteButtons.length; i++) // To find a match for the button to find the row
-					{
-						if (tempEB.equals(deleteButtons[i]))
-						{
-							tempRow = i;
-						}
-					}
-					System.out.println(teeTimes[tempRow].toString() + " DELETED!");
+					teeTimes[row] = new TeeTime("PlaceHolder", 0, 0, "None", day, "Tester");
+				}
 
-					Translator.deleteTeeTime(teeTimes[tempRow]);
-
-					AlertBox.display("Tee Time Deleted!");
-					window.close();
-					TeeSheetFX.teeSheet(login, dayEntry.getValue());
-				});
-
-				teeTimesTemp.remove(0);
-			} else
-			{
-				teeTimes[row] = new TeeTime("PlaceHolder", 0, 0, "None", day, "Tester");
-			}
+			} // End if times are in ArrayList
 
 			if (time < 1200)
 			{
-				temp = time + " AM";
+				tempTime = time + " AM";
 			} else if (time < 1300)
 			{
-				temp = time + " PM";
+				tempTime = time + " PM";
 			} else
 			{
-				temp = (time - 1200) + " PM";
+				tempTime = (time - 1200) + " PM";
 			}
-			if ((time / 10) % 10 == 5)
-			{
-				time += 40;
-			}
+
+			tempTime = tempTime.substring(0, tempTime.length() - 5) + ":" + tempTime.substring(tempTime.length() - 5);
+
 			if (time != prevTime)
 			{
-				Text teeTime = new Text(temp.substring(0, temp.length() - 5) + ":" + temp.substring(temp.length() - 5));
+				Text teeTime = new Text(tempTime);
 				teeTime.setFont(Font.font("Tahoma", FontWeight.NORMAL, 12));
 				teeGrid.add(teeTime, 0, row);
 			}
-			row++;
+
 			prevTime = time;
+			// Increment time only if there is not a skip
+
+			if ((time / 10) % 10 == 5)
+			{
+				time += 50;
+			} else
+			{
+				time += 10;
+			}
+
+			row++;
+
 		} // End loop
 
 		BorderPane borderPane = new BorderPane();
@@ -291,7 +322,7 @@ public class TeeSheetFX extends Application
 	 * @return the dollar amount that the rate converts to as a String to include
 	 *         "$"
 	 */
-	private static String rateToCost(String rate)
+	public static String rateToCost(String rate)
 	{
 		if (rate.equals("Regular"))
 			return "$100.00";

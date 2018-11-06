@@ -1,6 +1,17 @@
 import java.sql.*;
 import java.util.ArrayList;
 
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+
 /*
  * Class to connect to the MySQL Database 
  * Similar to the facade class that has a singleton connection that is established 
@@ -13,6 +24,23 @@ public class Connection
 
 	private Connection()
 	{
+		Stage window = new Stage();
+
+		window.setTitle("Connecting...");
+		window.setMinWidth(300);
+
+		Text sceneTitle = new Text("Connecting to database...");
+		sceneTitle.setFont(Font.font("Tahoma", FontWeight.NORMAL, 32));
+
+		VBox layout = new VBox(10);
+		layout.setMinWidth(100);
+		layout.getChildren().add(sceneTitle);
+		layout.setAlignment(Pos.CENTER);
+
+		Scene scene = new Scene(layout);
+		window.setScene(scene);
+		window.show();
+		
 		String host = "jdbc:mysql://sql9.freesqldatabase.com/sql9255339";
 		String dbuser = "sql9255339";
 		String dbpass = "S8EkeFyZuD";
@@ -23,6 +51,7 @@ public class Connection
 		{
 			e.printStackTrace();
 		}
+		window.close();
 	}
 
 	public static Connection getInstance()
@@ -88,7 +117,6 @@ public class Connection
 				TeeTime temp = new TeeTime(name, golfers, time, rate, day, uid);
 				teeTimeArray.add(temp);
 			}
-			System.out.println(teeTimeArray);
 			return teeTimeArray;
 		} catch (SQLException error)
 		{
